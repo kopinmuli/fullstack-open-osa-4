@@ -1,18 +1,18 @@
-const mongoose = require("mongoose");
-const supertest = require("supertest");
-const helper = require("./test_helper");
-const app = require("../app");
-const api = supertest(app);
-const bcrypt = require("bcryptjs");
-const User = require("../models/user");
+const mongoose = require('mongoose')
+const supertest = require('supertest')
+const helper = require('./test_helper')
+const app = require('../app')
+const api = supertest(app)
+const bcrypt = require('bcryptjs')
+const User = require('../models/user')
 
 
 describe('when there is initially one user at db', () => {
   beforeEach(async () => {
     await User.deleteMany({})
 
-    const passwordHash = await bcrypt.hash('salainen', 10)
-    const user = new User({ username: 'mluukkai', passwordHash })
+    const passwordHash = await bcrypt.hash('timppa69', 10)
+    const user = new User({ username: 'Timo Testaaja', passwordHash })
 
     await user.save()
   })
@@ -21,8 +21,8 @@ describe('when there is initially one user at db', () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
-      username: 'mluukkai',
-      name: 'Matti Luukkainen',
+      username: 'root',
+      name: 'Superuser',
       password: 'salainen',
     }
 
@@ -42,10 +42,10 @@ describe('when there is initially one user at db', () => {
   test('creation fails with proper statuscode and message if username already taken', async () => {
     const usersAtStart = await helper.usersInDb()
 
+    
     const newUser = {
-      username: 'root',
-      name: 'Superuser',
-      password: 'salainen',
+      username: 'Timo Testaaja',
+      password: 'timppa69',
     }
 
     const result = await api
