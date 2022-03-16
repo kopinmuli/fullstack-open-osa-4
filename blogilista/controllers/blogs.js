@@ -59,13 +59,14 @@ const getTokenFrom = request => {
   })
 
   blogsRouter.delete('/:id', async (request, response) => {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
     const blog = await Blog.findById(request.params.id)
-    
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const user = blog.user
+   
 
-    
+  
 
-    if (blog.user.toString() === decodedToken.id.toString()) {
+    if (user.toString() === decodedToken.id.toString()) {
       await blog.remove()
       response.status(204).end()
     } else {
